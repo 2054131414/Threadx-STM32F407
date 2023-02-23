@@ -48,24 +48,48 @@ char mem_pool[TX_APP_MEM_POOL_SIZE];
 */
 VOID tx_application_define(VOID *first_unused_memory)
 {
-    UINT ret = TX_SUCCESS;
+    UINT state;
     
     CHAR *pointer = TX_NULL;
     
     TX_THREAD_NOT_USED(first_unused_memory);
     
     /* Create a byte memory pool from which to allocate the thread stacks.  */
-    tx_byte_pool_create(&byte_pool, "byte pool", (VOID *)mem_pool, TX_APP_MEM_POOL_SIZE);
+    state = tx_byte_pool_create(&byte_pool, "byte pool", (VOID *)mem_pool, TX_APP_MEM_POOL_SIZE);
+    
+    /* Check create state */
+    if (state != TX_SUCCESS)
+    {
+        state = TX_POOL_ERROR;
+    }
     
     /* Allocate the stack for thread 0.  */
-    tx_byte_allocate(&byte_pool, (VOID **)&pointer, TX_APP_MEM_POOL_SIZE, TX_NO_WAIT);
-
+    state = tx_byte_allocate(&byte_pool, (VOID **)&pointer, TX_APP_MEM_POOL_SIZE, TX_NO_WAIT);
+    
+    /* Check create state */
+    if (state != TX_SUCCESS)
+    {
+        state = TX_POOL_ERROR;
+    }
+    
     /* Create the main thread.  */
-    tx_thread_create(&mainthread, "main thread", main_thread_entry, 0, pointer, TX_APP_MEM_POOL_SIZE, 1, 1, TX_NO_TIME_SLICE,
+    state = tx_thread_create(&mainthread, "main thread", main_thread_entry, 0, pointer, TX_APP_MEM_POOL_SIZE, 1, 1, TX_NO_TIME_SLICE,
                      TX_AUTO_START);
+    
+    /* Check create state */
+    if (state != TX_SUCCESS)
+    {
+        state = TX_THREAD_ERROR;
+    }
 
     /* Create mutually exclusive semaphores */
-    tx_mutex_create(&tx_printf,"tx printf",TX_NO_INHERIT);
+    state = tx_mutex_create(&tx_printf,"tx printf",TX_NO_INHERIT);
+    
+    /* Check create state */
+    if (state != TX_SUCCESS)
+    {
+        state = TX_MUTEX_ERROR;
+    }
 
 }
 
@@ -93,9 +117,48 @@ void tx_kprintf(const char *fmt, ...)
   * @param  Delay : number of ticks to wait
   * @retval None
   */
-void tx_delay_tick(uint32_t Delay)
+void App_Delay(uint32_t Delay)
 {
   UINT initial_time = tx_time_get();
   while ((tx_time_get() - initial_time) < Delay);
 }
 
+/**
+  * @brief  The function will calculate the tick from millisecond. 
+  * @param  ms the specified millisecond
+  *         - Negative Number wait forever
+  *         - Zero not wait
+  *         - Max 0x7fffffff
+  * @retval the calculated tick
+  */
+uint32_t tx_tick_from_millisecond(uint32_t ms)
+{
+    uint32_t tick;
+    
+    if (ms < 0)
+    {
+        tick = -1;
+    }
+    else
+    {
+        tick = TX_TIMER_TICKS_PER_SECOND * (ms / 1000);
+        tick += (TX_TIMER_TICKS_PER_SECOND * (ms % 1000) + 999) / 1000;
+    }
+    
+    /* return the calculated tick */
+    return tick;
+}
+
+/**
+  * @brief  This function will let current thread delay for some milliseconds.
+  * @param  ms the delay ms time
+  * @retval tx state
+  */
+uint32_t tx_thread_mdelay(uint32_t ms)
+{
+    uint32_t tick;
+    
+    tick = tx_tick_from_millisecond(ms);
+    
+    return tx_thread_sleep(tick);
+}
