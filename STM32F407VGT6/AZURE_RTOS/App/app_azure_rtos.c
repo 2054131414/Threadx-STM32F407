@@ -162,3 +162,40 @@ uint32_t tx_thread_mdelay(uint32_t ms)
     
     return tx_thread_sleep(tick);
 }
+
+/**
+  * @brief  Request memory user secondary encapsulation.
+  * @param  Request a memory size
+  * @retval pointer
+  */
+void *tx_malloc(size_t size)
+{
+    void *pointer = NULL;
+    UINT status;
+
+    status = tx_byte_allocate(&byte_pool, (VOID **) &pointer, size, TX_NO_WAIT);
+
+    if (status != TX_SUCCESS)
+        return NULL;
+
+    return pointer;
+}
+
+/**
+  * @brief  Free up memory.
+  * @param  ms the delay ms time
+  * @retval tx state
+  */
+void tx_free(void *ptr)
+{
+    UINT status;
+
+    status = tx_byte_release(ptr);
+
+    if (status != TX_SUCCESS)
+    {
+        status = TX_POOL_ERROR;
+    }
+}
+
+
