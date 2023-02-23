@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx,TX_INCLUDE_USER_DEFINE_FILE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/BSP/Inc;../AZURE_RTOS/App;../AZURE_RTOS/Task/Inc;../Middlewares/Third_Party/RTT_Viewer/inc;../Middlewares/ST/threadx/common/inc/;../Middlewares/ST/levelx/common/inc;../Middlewares/ST/levelx/port/inc;../Middlewares/ST/threadx/ports/cortex_m4/ac6/inc/;../Middlewares/Third_Party/Module_Init/Inc</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/BSP/Hardwares/Inc;../Drivers/BSP/Component/sfud/inc;../AZURE_RTOS/App;../AZURE_RTOS/Task/Inc;../Middlewares/Third_Party/RTT_Viewer/inc;../Middlewares/ST/threadx/common/inc/;../Middlewares/ST/levelx/common/inc;../Middlewares/ST/levelx/port/inc;../Middlewares/ST/threadx/ports/cortex_m4/ac6/inc/;../Middlewares/Third_Party/Module_Init/Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -672,32 +672,52 @@
             <File>
               <FileName>bsp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Drivers\BSP\Src\bsp.c</FilePath>
+              <FilePath>..\Drivers\BSP\Hardwares\Src\bsp.c</FilePath>
             </File>
             <File>
               <FileName>bsp_dwt.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Drivers\BSP\Src\bsp_dwt.c</FilePath>
+              <FilePath>..\Drivers\BSP\Hardwares\Src\bsp_dwt.c</FilePath>
             </File>
             <File>
               <FileName>bsp_led.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Drivers\BSP\Src\bsp_led.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Drivers\BSP\Src\bsp_uart.c</FilePath>
+              <FilePath>..\Drivers\BSP\Hardwares\Src\bsp_led.c</FilePath>
             </File>
             <File>
               <FileName>bsp_relay.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Drivers\BSP\Src\bsp_relay.c</FilePath>
+              <FilePath>..\Drivers\BSP\Hardwares\Src\bsp_relay.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\Hardwares\Src\bsp_uart.c</FilePath>
             </File>
             <File>
               <FileName>bsp_w25qxx.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Drivers\BSP\Src\bsp_w25qxx.c</FilePath>
+              <FilePath>..\Drivers\BSP\Hardwares\Src\bsp_w25qxx.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Drivers/SFUD</GroupName>
+          <Files>
+            <File>
+              <FileName>sfud.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\Component\sfud\src\sfud.c</FilePath>
+            </File>
+            <File>
+              <FileName>sfud_sfdp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\Component\sfud\src\sfud_sfdp.c</FilePath>
+            </File>
+            <File>
+              <FileName>sfud_port.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\Component\sfud\port\sfud_port.c</FilePath>
             </File>
           </Files>
         </Group>

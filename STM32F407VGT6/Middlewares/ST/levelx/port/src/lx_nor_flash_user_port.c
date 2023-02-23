@@ -43,7 +43,7 @@ static ULONG sector_buffer[FLASH_WORDS_PER_SECTOR];   /* Creat ram buffer */
 */
 static UINT lx_nor_flash_driver_read(ULONG *flash_address, ULONG *destination, ULONG words)
 {
-    SPI_Flash_Read((uint32_t)flash_address, (uint8_t *) destination, (uint16_t)(words*4));
+
     
     return (LX_SUCCESS);
 }
@@ -53,7 +53,7 @@ static UINT lx_nor_flash_driver_read(ULONG *flash_address, ULONG *destination, U
 */
 static UINT lx_nor_flash_driver_write(ULONG *flash_address, ULONG *source, ULONG words)
 {
-    SPI_Flash_Write_NoCheck((uint8_t *)source, (uint32_t)flash_address, (uint16_t)(words*4));
+
     
     return (LX_SUCCESS);
 }
@@ -65,7 +65,7 @@ static UINT lx_nor_flash_driver_block_erase(ULONG block, ULONG erase_count)
 {
     LX_PARAMETER_NOT_USED(erase_count);
     
-    SPI_Flash_Erase_Sector(block * FLASH_SIZE_BYTE_PER_SECTOR);
+
     
     return (LX_SUCCESS);
 }
@@ -126,16 +126,6 @@ void LX_NOR_FLASH_Init(void)
 
 void LX_NOR_FLASH_ReadWrite_Test(void)
 {
-    uint8_t wbuf[512] = "http://www.optomedic.com";
-    uint8_t rbuf[512] = {0};
-    
-    uint8_t wbuf_other[512] = "Who am I?";
-
-    _lx_nor_flash_sector_write(&W25Q64FV, 1, wbuf);
-    
-    _lx_nor_flash_sector_write(&W25Q64FV, 1, wbuf_other);
-
-    _lx_nor_flash_sector_read(&W25Q64FV, 1, rbuf);
 
     // printf("lx read %s\r\n", rbuf);
 }
