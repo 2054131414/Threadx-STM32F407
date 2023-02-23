@@ -37,7 +37,7 @@
 static TX_BYTE_POOL byte_pool;
 static TX_THREAD mainthread;
 static TX_MUTEX tx_printf;
-char mem_pool[TX_APP_MEM_POOL_SIZE];
+char  tx_mem_pool[TX_APP_MEM_POOL_SIZE];
 
 /* Private function prototypes -----------------------------------------------*/
 
@@ -54,19 +54,19 @@ VOID tx_application_define(VOID *first_unused_memory)
     
     TX_THREAD_NOT_USED(first_unused_memory);
     
-    /* Create a byte memory pool from which to allocate the thread stacks.  */
-    state = tx_byte_pool_create(&byte_pool, "byte pool", (VOID *)mem_pool, TX_APP_MEM_POOL_SIZE);
+    /* Create a byte memory pool from which to allocate the thread stacks. */
+    state = tx_byte_pool_create(&byte_pool, "byte pool", (VOID *)tx_mem_pool, TX_APP_MEM_POOL_SIZE);
     
-    /* Check create state */
+    /* Check create state. */
     if (state != TX_SUCCESS)
     {
         state = TX_POOL_ERROR;
     }
     
-    /* Allocate the stack for thread 0.  */
+    /* Allocate the stack for thread 0. */
     state = tx_byte_allocate(&byte_pool, (VOID **)&pointer, TX_APP_MEM_POOL_SIZE, TX_NO_WAIT);
     
-    /* Check create state */
+    /* Check create state. */
     if (state != TX_SUCCESS)
     {
         state = TX_POOL_ERROR;
@@ -76,7 +76,7 @@ VOID tx_application_define(VOID *first_unused_memory)
     state = tx_thread_create(&mainthread, "main thread", main_thread_entry, 0, pointer, TX_APP_MEM_POOL_SIZE, 1, 1, TX_NO_TIME_SLICE,
                      TX_AUTO_START);
     
-    /* Check create state */
+    /* Check create state. */
     if (state != TX_SUCCESS)
     {
         state = TX_THREAD_ERROR;
@@ -85,7 +85,7 @@ VOID tx_application_define(VOID *first_unused_memory)
     /* Create mutually exclusive semaphores */
     state = tx_mutex_create(&tx_printf,"tx printf",TX_NO_INHERIT);
     
-    /* Check create state */
+    /* Check create state. */
     if (state != TX_SUCCESS)
     {
         state = TX_MUTEX_ERROR;
@@ -100,7 +100,7 @@ VOID tx_application_define(VOID *first_unused_memory)
   */
 void tx_kprintf(const char *fmt, ...)
 {
-  char buf_str[200 + 1];
+  static char buf_str[TX_CONSOLEBUF_SIZE];
   va_list v_args;
   
   va_start(v_args, fmt);
