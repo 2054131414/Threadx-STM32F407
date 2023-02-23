@@ -49,7 +49,7 @@ int main(void)
     /* Turn off the time baseline for HAL, befor the kernel is on */
     HAL_SuspendTick();
     
-    /* 段注册，进入内核调度器开启之前 */
+    /* Call components board initial (use TX_INIT_BOARD_EXPORT())  */
     TX_COMPONENTS_BOARD_INIT();
     
     /* Enter the ThreadX kernel */

@@ -45,6 +45,8 @@ extern "C" {
 /* USER CODE BEGIN EC */
 #define TX_CONSOLEBUF_SIZE                       128
 
+#define MAIN_THREAD_STACK_SIZE                   256
+
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/

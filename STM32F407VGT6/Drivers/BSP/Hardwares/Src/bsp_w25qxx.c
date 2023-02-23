@@ -116,5 +116,5 @@ int sfud_flash_init(void)
         return -1;
     }
 }
-TX_INIT_BOARD_EXPORT(sfud_flash_init);
+//TX_INIT_BOARD_EXPORT(sfud_flash_init);
 

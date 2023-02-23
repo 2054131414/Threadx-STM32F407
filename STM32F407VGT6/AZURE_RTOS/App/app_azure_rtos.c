@@ -31,13 +31,16 @@
 #include "main_task.h"
 
 /* Private typedef -----------------------------------------------------------*/
+
 /* Private define ------------------------------------------------------------*/
+
 /* Private macro -------------------------------------------------------------*/
+
 /* Private variables ---------------------------------------------------------*/
 static TX_BYTE_POOL byte_pool;
 static TX_THREAD mainthread;
 static TX_MUTEX tx_printf;
-char  tx_mem_pool[TX_APP_MEM_POOL_SIZE];
+char  TX_MEM_POOL[TX_APP_MEM_POOL_SIZE];
 
 /* Private function prototypes -----------------------------------------------*/
 
@@ -55,7 +58,7 @@ VOID tx_application_define(VOID *first_unused_memory)
     TX_THREAD_NOT_USED(first_unused_memory);
     
     /* Create a byte memory pool from which to allocate the thread stacks. */
-    state = tx_byte_pool_create(&byte_pool, "byte pool", (VOID *)tx_mem_pool, TX_APP_MEM_POOL_SIZE);
+    state = tx_byte_pool_create(&byte_pool, "byte pool", (VOID *)TX_MEM_POOL, TX_APP_MEM_POOL_SIZE);
     
     /* Check create state. */
     if (state != TX_SUCCESS)
@@ -64,7 +67,7 @@ VOID tx_application_define(VOID *first_unused_memory)
     }
     
     /* Allocate the stack for thread 0. */
-    state = tx_byte_allocate(&byte_pool, (VOID **)&pointer, TX_APP_MEM_POOL_SIZE, TX_NO_WAIT);
+    state = tx_byte_allocate(&byte_pool, (VOID **)&pointer, MAIN_THREAD_STACK_SIZE, TX_NO_WAIT);
     
     /* Check create state. */
     if (state != TX_SUCCESS)
@@ -73,7 +76,7 @@ VOID tx_application_define(VOID *first_unused_memory)
     }
     
     /* Create the main thread.  */
-    state = tx_thread_create(&mainthread, "main thread", main_thread_entry, 0, pointer, TX_APP_MEM_POOL_SIZE, 1, 1, TX_NO_TIME_SLICE,
+    state = tx_thread_create(&mainthread, "main thread", main_thread_entry, 0, pointer, MAIN_THREAD_STACK_SIZE, 1, 1, TX_NO_TIME_SLICE,
                      TX_AUTO_START);
     
     /* Check create state. */

@@ -190,7 +190,7 @@
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>0</useUlib>
+            <useUlib>1</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
@@ -314,7 +314,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx,TX_INCLUDE_USER_DEFINE_FILE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/BSP/Hardwares/Inc;../Drivers/BSP/Component/sfud/inc;../AZURE_RTOS/App;../AZURE_RTOS/Task/Inc;../Middlewares/Third_Party/RTT_Viewer/inc;../Middlewares/ST/threadx/common/inc/;../Middlewares/ST/levelx/common/inc;../Middlewares/ST/levelx/port/inc;../Middlewares/ST/threadx/ports/cortex_m4/ac6/inc/;../Middlewares/Third_Party/Module_Init/Inc</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/BSP/Hardwares/Inc;../Drivers/BSP/Component/sfud/inc;../AZURE_RTOS/App;../AZURE_RTOS/Task/Inc;../Middlewares/Third_Party/RTT_Viewer/inc;../Middlewares/ST/threadx/common/inc/;../Middlewares/ST/levelx/common/inc;../Middlewares/ST/levelx/port/inc;../Middlewares/ST/threadx/ports/cortex_m4/ac6/inc/;../Middlewares/Third_Party/Module_Init/Inc;../Middlewares/Third_Party/Shell/Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -10533,6 +10533,26 @@
               <FileName>module_init.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Middlewares\Third_Party\Module_Init\Src\module_init.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Middlewares/Shell</GroupName>
+          <Files>
+            <File>
+              <FileName>shell.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\Third_Party\Shell\Src\shell.c</FilePath>
+            </File>
+            <File>
+              <FileName>shell_ext.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\Third_Party\Shell\Src\shell_ext.c</FilePath>
+            </File>
+            <File>
+              <FileName>shell_port.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\Third_Party\Shell\Src\shell_port.c</FilePath>
             </File>
           </Files>
         </Group>

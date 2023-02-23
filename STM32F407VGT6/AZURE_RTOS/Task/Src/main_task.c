@@ -42,12 +42,12 @@ void main_thread_entry(ULONG thread_input)
 {
     tx_kprintf("start main thread %d ...\r\n", thread_input);
     
-    /* 段注进入线程开启调度之之后 */
-    TX_COMPONENTS_INIT();
+    /* Azure-RTOS components initialization  */
+    //TX_COMPONENTS_INIT();
     
     while(1)
     {
-        
+       tx_thread_sleep(100); 
     }
 }
 

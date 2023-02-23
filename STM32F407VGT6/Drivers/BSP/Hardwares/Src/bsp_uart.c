@@ -250,3 +250,13 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
         HAL_NVIC_DisableIRQ(USART2_IRQn);
     }
 }
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    if (huart->Instance == UART5)
+    {
+        
+    }
+}
+
+
