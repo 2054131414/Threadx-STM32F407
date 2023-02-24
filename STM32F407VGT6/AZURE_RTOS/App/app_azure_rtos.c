@@ -29,6 +29,7 @@
 #include "stm32f4xx_hal.h"
 #include "module_init.h"
 #include "main_task.h"
+#include "shell_task.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -39,6 +40,7 @@
 /* Private variables ---------------------------------------------------------*/
 static TX_BYTE_POOL byte_pool;
 static TX_THREAD mainthread;
+static TX_THREAD shellthread;
 static TX_MUTEX tx_printf;
 char  TX_MEM_POOL[TX_APP_MEM_POOL_SIZE];
 
@@ -69,7 +71,7 @@ VOID tx_application_define(VOID *first_unused_memory)
         state = TX_POOL_ERROR;
     }
     
-    /* Allocate the stack for thread 0. */
+    /* Allocate the stack for main thread. */
     state = tx_byte_allocate(&byte_pool, (VOID **)&pointer, MAIN_THREAD_STACK_SIZE, TX_NO_WAIT);
     
     /* Check create state. */
@@ -88,6 +90,25 @@ VOID tx_application_define(VOID *first_unused_memory)
         state = TX_THREAD_ERROR;
     }
     
+    /* Allocate the stack for main thread. */
+    state = tx_byte_allocate(&byte_pool, (VOID **)&pointer, SHELL_THREAD_STACK_SIZE, TX_NO_WAIT);
+		
+		/* Check create state. */
+    if (state != TX_SUCCESS)
+    {
+        state = TX_POOL_ERROR;
+    }
+		
+    /* Create the shell thread.  */
+    state = tx_thread_create(&shellthread, "shell thread", shell_thread_entry, 0, pointer, SHELL_THREAD_STACK_SIZE, 21, 21, TX_NO_TIME_SLICE,
+                     TX_AUTO_START);
+    
+    /* Check create state. */
+    if (state != TX_SUCCESS)
+    {
+        state = TX_THREAD_ERROR;
+    }
+		
     /* Create mutually exclusive semaphores */
     state = tx_mutex_create(&tx_printf,"tx printf",TX_NO_INHERIT);
     

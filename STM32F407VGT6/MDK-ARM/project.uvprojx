@@ -554,6 +554,11 @@
               <FileType>1</FileType>
               <FilePath>..\AZURE_RTOS\Task\Src\main_task.c</FilePath>
             </File>
+            <File>
+              <FileName>shell_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\AZURE_RTOS\Task\Src\shell_task.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
