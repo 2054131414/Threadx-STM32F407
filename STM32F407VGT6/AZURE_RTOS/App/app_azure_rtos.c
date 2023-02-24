@@ -50,69 +50,69 @@ char  TX_MEM_POOL[TX_APP_MEM_POOL_SIZE];
  * @param  first_unused_memory : Pointer to the first unused memory
  * @retval None
 */
-VOID tx_application_define(VOID *first_unused_memory)
+VOID tx_application_define(VOID* first_unused_memory)
 {
     UINT state;
-    
-    CHAR *pointer = TX_NULL;
-    
+
+    CHAR* pointer = TX_NULL;
+
     TX_THREAD_NOT_USED(first_unused_memory);
-    
+
     /* Azure-RTOS components initialization. */
     TX_COMPONENTS_INIT();
-    
+
     /* Create a byte memory pool from which to allocate the thread stacks. */
-    state = tx_byte_pool_create(&byte_pool, "byte pool", (VOID *)TX_MEM_POOL, TX_APP_MEM_POOL_SIZE);
-    
+    state = tx_byte_pool_create(&byte_pool, "byte pool", (VOID*)TX_MEM_POOL, TX_APP_MEM_POOL_SIZE);
+
     /* Check create state. */
-    if (state != TX_SUCCESS)
+    if(state != TX_SUCCESS)
     {
         state = TX_POOL_ERROR;
     }
-    
+
     /* Allocate the stack for main thread. */
-    state = tx_byte_allocate(&byte_pool, (VOID **)&pointer, MAIN_THREAD_STACK_SIZE, TX_NO_WAIT);
-    
+    state = tx_byte_allocate(&byte_pool, (VOID**)&pointer, MAIN_THREAD_STACK_SIZE, TX_NO_WAIT);
+
     /* Check create state. */
-    if (state != TX_SUCCESS)
+    if(state != TX_SUCCESS)
     {
         state = TX_POOL_ERROR;
     }
-    
+
     /* Create the main thread.  */
     state = tx_thread_create(&mainthread, "main thread", main_thread_entry, 0, pointer, MAIN_THREAD_STACK_SIZE, 1, 1, TX_NO_TIME_SLICE,
-                     TX_AUTO_START);
-    
+                             TX_AUTO_START);
+
     /* Check create state. */
-    if (state != TX_SUCCESS)
+    if(state != TX_SUCCESS)
     {
         state = TX_THREAD_ERROR;
     }
-    
+
     /* Allocate the stack for main thread. */
-    state = tx_byte_allocate(&byte_pool, (VOID **)&pointer, SHELL_THREAD_STACK_SIZE, TX_NO_WAIT);
-		
-		/* Check create state. */
-    if (state != TX_SUCCESS)
+    state = tx_byte_allocate(&byte_pool, (VOID**)&pointer, SHELL_THREAD_STACK_SIZE, TX_NO_WAIT);
+
+    /* Check create state. */
+    if(state != TX_SUCCESS)
     {
         state = TX_POOL_ERROR;
     }
-		
+
     /* Create the shell thread.  */
     state = tx_thread_create(&shellthread, "shell thread", shell_thread_entry, 0, pointer, SHELL_THREAD_STACK_SIZE, 21, 21, TX_NO_TIME_SLICE,
-                     TX_AUTO_START);
-    
+                             TX_AUTO_START);
+
     /* Check create state. */
-    if (state != TX_SUCCESS)
+    if(state != TX_SUCCESS)
     {
         state = TX_THREAD_ERROR;
     }
-		
+
     /* Create mutually exclusive semaphores */
-    state = tx_mutex_create(&tx_printf,"tx printf",TX_NO_INHERIT);
-    
+    state = tx_mutex_create(&tx_printf, "tx printf", TX_NO_INHERIT);
+
     /* Check create state. */
-    if (state != TX_SUCCESS)
+    if(state != TX_SUCCESS)
     {
         state = TX_MUTEX_ERROR;
     }
@@ -124,19 +124,19 @@ VOID tx_application_define(VOID *first_unused_memory)
   * @param  The content of printf
   * @retval None
   */
-void tx_kprintf(const char *fmt, ...)
+void tx_kprintf(const char* fmt, ...)
 {
-		va_list v_args;
-		size_t length;
-		static char buf_str[TX_CONSOLEBUF_SIZE];
+    va_list v_args;
+    size_t length;
+    static char buf_str[TX_CONSOLEBUF_SIZE];
 
     va_start(v_args, fmt);
-	  length = vsnprintf(buf_str, sizeof(buf_str) - 1, fmt, v_args);
-    if (length > TX_CONSOLEBUF_SIZE - 1)
-			  length = TX_CONSOLEBUF_SIZE - 1;
-    
-		tx_hw_console_output(buf_str);
-		va_end(v_args);
+    length = vsnprintf(buf_str, sizeof(buf_str) - 1, fmt, v_args);
+    if(length > TX_CONSOLEBUF_SIZE - 1)
+        length = TX_CONSOLEBUF_SIZE - 1;
+
+    tx_hw_console_output(buf_str);
+    va_end(v_args);
 
     // tx_mutex_get(&tx_printf, TX_WAIT_FOREVER);
     // printf("%s", buf_str);
@@ -148,50 +148,10 @@ void tx_kprintf(const char *fmt, ...)
   * @param  Delay : number of ticks to wait
   * @retval None
   */
-void App_Delay(uint32_t Delay)
+void TX_Delay(uint32_t Delay)
 {
-  UINT initial_time = tx_time_get();
-  while ((tx_time_get() - initial_time) < Delay);
-}
-
-/**
-  * @brief  The function will calculate the tick from millisecond. 
-  * @param  ms the specified millisecond
-  *         - Negative Number wait forever
-  *         - Zero not wait
-  *         - Max 0x7fffffff
-  * @retval the calculated tick
-  */
-uint32_t tx_tick_from_millisecond(uint32_t ms)
-{
-    uint32_t tick;
-    
-    if (ms < 0)
-    {
-        tick = -1;
-    }
-    else
-    {
-        tick = TX_TIMER_TICKS_PER_SECOND * (ms / 1000);
-        tick += (TX_TIMER_TICKS_PER_SECOND * (ms % 1000) + 999) / 1000;
-    }
-    
-    /* return the calculated tick */
-    return tick;
-}
-
-/**
-  * @brief  This function will let current thread delay for some milliseconds.
-  * @param  ms the delay ms time
-  * @retval tx state
-  */
-uint32_t tx_thread_mdelay(uint32_t ms)
-{
-    uint32_t tick;
-    
-    tick = tx_tick_from_millisecond(ms);
-    
-    return tx_thread_sleep(tick);
+    UINT initial_time = tx_time_get();
+    while((tx_time_get() - initial_time) < Delay);
 }
 
 /**
@@ -199,14 +159,14 @@ uint32_t tx_thread_mdelay(uint32_t ms)
   * @param  Request a memory size
   * @retval pointer
   */
-void *tx_malloc(size_t size)
+void* tx_malloc(size_t size)
 {
-    void *pointer = NULL;
+    void* pointer = NULL;
     UINT status;
 
-    status = tx_byte_allocate(&byte_pool, (VOID **) &pointer, size, TX_NO_WAIT);
+    status = tx_byte_allocate(&byte_pool, (VOID**) &pointer, size, TX_NO_WAIT);
 
-    if (status != TX_SUCCESS)
+    if(status != TX_SUCCESS)
         return NULL;
 
     return pointer;
@@ -217,13 +177,13 @@ void *tx_malloc(size_t size)
   * @param  ms the delay ms time
   * @retval tx state
   */
-void tx_free(void *ptr)
+void tx_free(void* ptr)
 {
     UINT status;
 
     status = tx_byte_release(ptr);
 
-    if (status != TX_SUCCESS)
+    if(status != TX_SUCCESS)
     {
         status = TX_POOL_ERROR;
     }

@@ -35,30 +35,30 @@
 
 /* Private functions ---------------------------------------------------------*/
 
-void tx_hw_console_output(const char *str)
+void tx_hw_console_output(const char* str)
 {
-		size_t i = 0, size = 0;
-		char a = '\r';
-	
-		size = strlen(str);
-	
-		for (i = 0; i < size; i++)
-		{
-				if (*(str + i) == '\n')
-				{
-						HAL_UART_Transmit(&SHELL_PORT, (uint8_t *)&a, 1, 1);
-				}
-				HAL_UART_Transmit(&SHELL_PORT, (uint8_t *)(str + i), 1, 1);
-		}
+    size_t i = 0, size = 0;
+    char a = '\r';
+
+    size = strlen(str);
+
+    for(i = 0; i < size; i++)
+    {
+        if(*(str + i) == '\n')
+        {
+            HAL_UART_Transmit(&SHELL_PORT, (uint8_t*)&a, 1, 1);
+        }
+        HAL_UART_Transmit(&SHELL_PORT, (uint8_t*)(str + i), 1, 1);
+    }
 }
 
 char tx_hw_console_getchar(void)
 {
-		int ch = -1;
-		
-		if (__HAL_UART_GET_FLAG(&SHELL_PORT, UART_FLAG_RXNE) != RESET)
-		{
-				ch = SHELL_PORT.Instance->DR & 0xff;
+    int ch = -1;
+
+    if(__HAL_UART_GET_FLAG(&SHELL_PORT, UART_FLAG_RXNE) != RESET)
+    {
+        ch = SHELL_PORT.Instance->DR & 0xff;
     }
     else
     {
@@ -66,9 +66,9 @@ char tx_hw_console_getchar(void)
         {
             __HAL_UART_CLEAR_OREFLAG(&SHELL_PORT);
         }
-        tx_thread_mdelay(10);
+        TX_Delay(10);
     }
-		return ch;
+    return ch;
 }
 
 /**
@@ -78,7 +78,7 @@ char tx_hw_console_getchar(void)
   */
 static int nr_shell_getchar(void)
 {
-		return tx_hw_console_getchar();
+    return tx_hw_console_getchar();
 }
 
 /**
@@ -89,15 +89,15 @@ static int nr_shell_getchar(void)
 void shell_thread_entry(ULONG thread_input)
 {
     char ch;
-    
-		shell_init();
-	
+
+    shell_init();
+
     while(1)
     {
         ch = nr_shell_getchar();
-			  
-			  if (ch == '\r')
-					shell('\n');
+
+        if(ch == '\r')
+            shell('\n');
     }
 }
 

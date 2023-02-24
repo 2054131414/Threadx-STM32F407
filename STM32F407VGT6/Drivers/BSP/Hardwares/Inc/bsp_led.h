@@ -16,13 +16,16 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
+
 /* Exported defines ----------------------------------------------------------*/
 #define LED_OFF     0
+
 #define LED_ON      1
 
-#define LED_BLINK_FOREVER   0xFFFFFFFF
+#define LED_BLINK   2
 
 /* Exported variables --------------------------------------------------------*/
+
 /* Exported functions --------------------------------------------------------*/
 int BSP_Led_Init(void);
 
@@ -30,9 +33,9 @@ int32_t led_on(int32_t led_id);
 
 int32_t led_off(int32_t led_id);
 
-int32_t led_ctr(int32_t led_id, int8_t led_state);
+int32_t led_blink(int32_t led_id, uint32_t ms);
 
-int32_t led_bink(int32_t led_id, uint8_t state, uint8_t blink_on, uint8_t blink_off, uint32_t blink_count);
+int32_t led_ctr(int32_t led_id, int8_t led_state);
 
 #ifdef __cplusplus
 }

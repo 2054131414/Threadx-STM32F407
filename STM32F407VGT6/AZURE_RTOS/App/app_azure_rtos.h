@@ -42,7 +42,7 @@ void *tx_malloc(size_t size);
 
 void tx_free(void *ptr);
 
-uint32_t tx_thread_mdelay(uint32_t ms);
+void TX_Delay(uint32_t Delay);
 
 /* Private defines -----------------------------------------------------------*/
 

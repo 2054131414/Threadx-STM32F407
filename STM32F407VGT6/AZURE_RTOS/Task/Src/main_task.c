@@ -19,6 +19,7 @@
 #include "main_task.h"
 
 /* Private includes ----------------------------------------------------------*/
+#include "bsp_led.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -43,7 +44,7 @@ void main_thread_entry(ULONG thread_input)
     
     while(1)
     {
-       tx_thread_sleep(100); 
+        led_blink(0,1000);
     }
 }
 
