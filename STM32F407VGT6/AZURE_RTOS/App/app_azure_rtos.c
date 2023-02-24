@@ -57,6 +57,9 @@ VOID tx_application_define(VOID *first_unused_memory)
     
     TX_THREAD_NOT_USED(first_unused_memory);
     
+    /* Azure-RTOS components initialization. */
+    TX_COMPONENTS_INIT();
+    
     /* Create a byte memory pool from which to allocate the thread stacks. */
     state = tx_byte_pool_create(&byte_pool, "byte pool", (VOID *)TX_MEM_POOL, TX_APP_MEM_POOL_SIZE);
     
@@ -84,7 +87,7 @@ VOID tx_application_define(VOID *first_unused_memory)
     {
         state = TX_THREAD_ERROR;
     }
-
+    
     /* Create mutually exclusive semaphores */
     state = tx_mutex_create(&tx_printf,"tx printf",TX_NO_INHERIT);
     

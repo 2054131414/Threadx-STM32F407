@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx,TX_INCLUDE_USER_DEFINE_FILE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/BSP/Hardwares/Inc;../Drivers/BSP/Component/sfud/inc;../AZURE_RTOS/App;../AZURE_RTOS/Task/Inc;../Middlewares/Third_Party/RTT_Viewer/inc;../Middlewares/ST/threadx/common/inc/;../Middlewares/ST/levelx/common/inc;../Middlewares/ST/levelx/port/inc;../Middlewares/ST/threadx/ports/cortex_m4/ac6/inc/;../Middlewares/Third_Party/Module_Init/Inc;../Middlewares/Third_Party/Shell/Inc</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/BSP/Hardwares/Inc;../Drivers/BSP/Component/sfud/inc;../AZURE_RTOS/App;../AZURE_RTOS/Task/Inc;../Middlewares/Third_Party/RTT_Viewer/inc;../Middlewares/ST/threadx/common/inc/;../Middlewares/ST/levelx/common/inc;../Middlewares/ST/levelx/port/inc;../Middlewares/ST/threadx/ports/cortex_m4/ac6/inc/;../Middlewares/Third_Party/Module_Init/Inc;..\Middlewares\Third_Party\Shell\Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -10545,14 +10545,24 @@
               <FilePath>..\Middlewares\Third_Party\Shell\Src\shell.c</FilePath>
             </File>
             <File>
-              <FileName>shell_ext.c</FileName>
+              <FileName>shell_commands.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Middlewares\Third_Party\Shell\Src\shell_ext.c</FilePath>
+              <FilePath>..\Middlewares\Third_Party\Shell\Src\shell_commands.c</FilePath>
             </File>
             <File>
-              <FileName>shell_port.c</FileName>
+              <FileName>shell_history.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Middlewares\Third_Party\Shell\Src\shell_port.c</FilePath>
+              <FilePath>..\Middlewares\Third_Party\Shell\Src\shell_history.c</FilePath>
+            </File>
+            <File>
+              <FileName>shell_serial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\Third_Party\Shell\Src\shell_serial.c</FilePath>
+            </File>
+            <File>
+              <FileName>shell_log.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\Third_Party\Shell\Src\shell_log.c</FilePath>
             </File>
           </Files>
         </Group>

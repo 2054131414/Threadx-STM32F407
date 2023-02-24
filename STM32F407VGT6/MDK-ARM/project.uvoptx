@@ -279,7 +279,7 @@
 
   <Group>
     <GroupName>Application/User/AzureRTOS</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -575,7 +575,7 @@
 
   <Group>
     <GroupName>Drivers/BSP</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -3167,7 +3167,7 @@
 
   <Group>
     <GroupName>Middlewares/Shell</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -3190,8 +3190,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Middlewares\Third_Party\Shell\Src\shell_ext.c</PathWithFileName>
-      <FilenameWithoutPath>shell_ext.c</FilenameWithoutPath>
+      <PathWithFileName>..\Middlewares\Third_Party\Shell\Src\shell_commands.c</PathWithFileName>
+      <FilenameWithoutPath>shell_commands.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -3202,8 +3202,32 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Middlewares\Third_Party\Shell\Src\shell_port.c</PathWithFileName>
-      <FilenameWithoutPath>shell_port.c</FilenameWithoutPath>
+      <PathWithFileName>..\Middlewares\Third_Party\Shell\Src\shell_history.c</PathWithFileName>
+      <FilenameWithoutPath>shell_history.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>16</GroupNumber>
+      <FileNumber>241</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\Middlewares\Third_Party\Shell\Src\shell_serial.c</PathWithFileName>
+      <FilenameWithoutPath>shell_serial.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>16</GroupNumber>
+      <FileNumber>242</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\Middlewares\Third_Party\Shell\Src\shell_log.c</PathWithFileName>
+      <FilenameWithoutPath>shell_log.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

@@ -19,7 +19,6 @@
 #include "main_task.h"
 
 /* Private includes ----------------------------------------------------------*/
-#include "module_init.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -41,9 +40,6 @@
 void main_thread_entry(ULONG thread_input)
 {
     tx_kprintf("start main thread %d ...\r\n", thread_input);
-    
-    /* Azure-RTOS components initialization  */
-    //TX_COMPONENTS_INIT();
     
     while(1)
     {

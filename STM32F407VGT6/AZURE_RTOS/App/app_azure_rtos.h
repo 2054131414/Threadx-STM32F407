@@ -37,6 +37,10 @@ extern "C" {
 /* Exported functions prototypes ---------------------------------------------*/
 void tx_kprintf(const char *fmt, ...);
 
+void *tx_malloc(size_t size);
+
+void tx_free(void *ptr);
+
 /* Private defines -----------------------------------------------------------*/
 
 

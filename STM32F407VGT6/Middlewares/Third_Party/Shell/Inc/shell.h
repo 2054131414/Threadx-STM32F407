@@ -1,368 +1,107 @@
-/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file           : shell.c
-  * @brief          : letter shell
+  * File Name          : shell.c
+  * Description        : shell task thread
   ******************************************************************************
   * @attention
+  * VT100 控制码: \033[0m     // 关闭所有属性      \033[4m     // 下划线
+  *               \033[1m     // 设置为高亮        \033[5m     // 闪烁
+  *               \033[7m     // 反显              \033[8m     // 消隐
+  *               \033[nA     // 光标上移 n 行     \033[nB     // 光标下移 n 行
+  *               \033[nC     // 光标右移 n 行     \033[nD     // 光标左移 n 行
+  *               \033[y;xH   // 设置光标位置      \033[2J     // 清屏
+  *               \033[K      // 清除从光标到行尾的内容
+  *               \033[s      // 保存光标位置      \033[?25l   // 隐藏光标
+  *               \033[u      // 恢复光标位置      \033[?25h   // 显示光标
   *
-  * Copyright (c) 2018 Letter.
+  *             \033[30m – \033[37m 为设置前景色   \033[40m – \033[47m 为设置背景色
+  *             30: 黑色                           40: 黑色
+  *             31: 红色                           41: 红色
+  *             32: 绿色                           42: 绿色
+  *             33: 黄色                           43: 黄色
+  *             34: 蓝色                           44: 蓝色
+  *             35: 紫色                           45: 紫色
+  *             36: 青色                           46: 青色
+  *             37: 白色                           47: 白色    
+  *
   *
   ******************************************************************************
   */
-/* USER CODE END Header */
-#ifndef     __SHELL_H__
-#define     __SHELL_H__
 
-/* Includes ------------------------------------------------------------------*/
-#include "shell_cfg.h"
+#ifndef __SHELL_H
+#define __SHELL_H
 
-/* Exported defines ----------------------------------------------------------*/
-#if SHELL_USING_AUTH == 1
-#if !defined(SHELL_USER_PASSWORD)
-#error "please config shell user password (int shell_cfg.h) "
-#endif
+#ifdef __cplusplus
+extern "C" {
 #endif
 
-#define     SHELL_VERSION               "2.0.8"                 /**< 版本号 */
+/* Exported includes ---------------------------------------------------------*/
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+#include "shell_log.h"
 
-/**
- * @brief shell键值定义
- *
- */
-#define     SHELL_KEY_LF                0x0A
-#define     SHELL_KEY_CR                0x0D
-#define     SHELL_KEY_TAB               0x09
-#define     SHELL_KEY_BACKSPACE         0x08
-#define     SHELL_KEY_DELETE            0x7F
-#define     SHELL_KEY_ESC               0x1B
+/* Exported define ------------------------------------------------------------*/
+/* End of line */
+#define SHELL_NEW_LINE   "\r\n"
 
-#define     SHELL_KEY_CTRL_T            0x14
-#define     SHELL_KEY_CTRL_A            0x01
-#define     SHELL_KEY_CTRL_B            0x02
-#define     SHELL_KEY_CTRL_C            0x03
-#define     SHELL_KEY_CTRL_D            0x04
-#define     SHELL_KEY_CTRL_E            0x05
-#define     SHELL_KEY_CTRL_F            0x06
-#define     SHELL_KEY_CTRL_G            0x07
-#define     SHELL_KEY_CTRL_H            0x08
-#define     SHELL_KEY_CTRL_I            0x09
-#define     SHELL_KEY_CTRL_J            0x0A
-#define     SHELL_KEY_CTRL_K            0x0B
-#define     SHELL_KEY_CTRL_L            0x0C
-#define     SHELL_KEY_CTRL_M            0x0D
-#define     SHELL_KEY_CTRL_N            0x0E
-#define     SHELL_KEY_CTRL_O            0x0F
-#define     SHELL_KEY_CTRL_P            0x10
-#define     SHELL_KEY_CTRL_Q            0x11
-#define     SHELL_KEY_CTRL_R            0x12
-#define     SHELL_KEY_CTRL_S            0x13
-#define     SHELL_KEY_CTRL_T            0x14
-#define     SHELL_KEY_CTRL_U            0x15
-#define     SHELL_KEY_CTRL_V            0x16
-#define     SHELL_KEY_CTRL_W            0x17
-#define     SHELL_KEY_CTRL_X            0x18
-#define     SHELL_KEY_CTRL_Y            0x19
-#define     SHELL_KEY_CTRL_Z            0x1A
+/* Helper macros to parse arguments */
+#define SHELL_ARGS_INIT(args, next_args) (next_args) = (args);
 
-/**
- * @brief shell变量类型定义
- *
- */
-#define     SHELL_VAR_INT               0
-#define     SHELL_VAR_SHORT             1
-#define     SHELL_VAR_CHAR              2
-#define     SHELL_VAR_POINTER           3
-#define     SHELL_VAL                   4
+#define SHELL_ARGS_NEXT(args, next_args)            \
+    do {                                            \
+        (args) = (next_args);                       \
+        if((args) != NULL) {                        \
+            if(*(args) == '\0') {                   \
+                (args) = NULL;                      \
+            } else {                                \
+                (next_args) = strchr((args), ' ');  \
+                if((next_args) != NULL) {           \
+                    *(next_args) = '\0';            \
+                    (next_args)++;                  \
+                }                                   \
+            }                                       \
+        } else {                                    \
+            (next_args) = NULL;                     \
+        }                                           \
+    } while(0)
 
-#if defined(__CC_ARM) || (defined(__ARMCC_VERSION) && __ARMCC_VERSION >= 6000000)
-#define SECTION(x)                  __attribute__((section(x)))
-#elif defined(__ICCARM__)
-#define SECTION(x)                  @ x
-#elif defined(__GNUC__)
-#define SECTION(x)                  __attribute__((section(x)))
-#else
-#define SECTION(x)
-#endif
+/* Exported types ------------------------------------------------------------*/
+struct shell_command_sets_t;
 
-/**
- * @brief shell命令导出
- *
- * @attention 命令导出方式支持keil,iar的编译器以及gcc，具体参考readme
- */
-#if SHELL_USING_CMD_EXPORT == 1
-#if SHELL_LONG_HELP == 1
-#define     SHELL_EXPORT_CMD(cmd, func, desc)                               \
-            const char shellCmd##cmd[] = #cmd;                              \
-            const char shellDesc##cmd[] = #desc;                            \
-            const SHELL_CommandTypeDef                                      \
-            shellCommand##cmd SECTION("shellCommand") =                     \
-            {                                                               \
-                shellCmd##cmd,                                              \
-                (int (*)())func,                                            \
-                shellDesc##cmd,                                             \
-                (void *)0                                                   \
-            }
-#define     SHELL_EXPORT_CMD_EX(cmd, func, desc, help)                      \
-            const char shellCmd##cmd[] = #cmd;                              \
-            const char shellDesc##cmd[] = #desc;                            \
-            const char shellHelp##cmd[] = #help;                            \
-            const SHELL_CommandTypeDef                                      \
-            shellCommand##cmd SECTION("shellCommand") =                     \
-            {                                                               \
-                shellCmd##cmd,                                              \
-                (int (*)())func,                                            \
-                shellDesc##cmd,                                             \
-                shellHelp##cmd                                              \
-            }
-#else /** SHELL_LONG_HELP == 1 */
-#define     SHELL_EXPORT_CMD(cmd, func, desc)                               \
-            const char shellCmd##cmd[] = #cmd;                              \
-            const char shellDesc##cmd[] = #desc;                            \
-            const SHELL_CommandTypeDef                                      \
-            shellCommand##cmd SECTION("shellCommand") =                     \
-            {                                                               \
-                shellCmd##cmd,                                              \
-                (int (*)())func,                                            \
-                shellDesc##cmd                                              \
-            }
-#define     SHELL_EXPORT_CMD_EX(cmd, func, desc, help)                      \
-            const char shellCmd##cmd[] = #cmd;                              \
-            const char shellDesc##cmd[] = #desc;                            \
-            const SHELL_CommandTypeDef                                      \
-            shellCommand##cmd SECTION("shellCommand") =                     \
-            {                                                               \
-                shellCmd##cmd,                                              \
-                (int (*)())func,                                            \
-                shellDesc##cmd                                              \
-            }
-#endif /** SHELL_LONG_HELP == 1 */
+struct shell_history_queue_t;
 
-#if SHELL_USING_VAR == 1
-#define SHELL_EXPORT_VAR(var, variable, desc, type)                     \
-            const char shellVar##var[] = #var;                              \
-            const char shellDesc##var[] = #desc;                            \
-            const SHELL_VaribaleTypeDef                                     \
-            shellVariable##var SECTION("shellVariable") =                   \
-            {                                                               \
-                shellVar##var,                                              \
-                (void *)(variable),                                         \
-                shellDesc##var,                                             \
-                type                                                        \
-            }
-#else
-#define SHELL_EXPORT_VAR(var, variable, desc, type)
-#endif /** SHELL_USING_VAR == 1 */
-
-#else
-#define     SHELL_EXPORT_CMD(cmd, func, desc)
-#define     SHELL_EXPORT_CMD_EX(cmd, func, desc, help)
-#define     SHELL_EXPORT_VAR(var, variable, desc, type)
-#endif /** SHELL_USING_CMD_EXPORT == 1 */
-
-#define     SHELL_EXPORT_VAR_INT(var, variable, desc)                       \
-            SHELL_EXPORT_VAR(var, &variable, desc, SHELL_VAR_INT)
-#define     SHELL_EXPORT_VAR_SHORT(var, variable, desc)                     \
-            SHELL_EXPORT_VAR(var, &variable, desc, SHELL_VAR_SHORT)
-#define     SHELL_EXPORT_VAR_CHAR(var, variable, desc)                      \
-            SHELL_EXPORT_VAR(var, &variable, desc, SHELL_VAR_CHAR)
-#define     SHELL_EXPORT_VAR_POINTER(var, variable, desc)                   \
-            SHELL_EXPORT_VAR(var, variable, desc, SHELL_VAR_POINTER)
-#define     SHELL_EXPORT_VAL(val, value, desc)                              \
-            SHELL_EXPORT_VAR(val, value, desc, SHELL_VAL)
-
-
-/**
- * @brief shell命令条目
- *
- * @note 用于shell命令通过命令表的方式定义
- */
-#if SHELL_USING_CMD_EXPORT == 0
-#if SHELL_LONG_HELP == 1
-#define     SHELL_CMD_ITEM(cmd, func, desc)                                 \
-            {                                                               \
-                #cmd,                                                       \
-                (int (*)())func,                                            \
-                #desc,                                                      \
-                (void *)0                                                   \
-            }
-#define     SHELL_CMD_ITEM_EX(cmd, func, desc, help)                        \
-            {                                                               \
-                #cmd,                                                       \
-                (int (*)())func,                                            \
-                #desc,                                                      \
-                #help                                                       \
-            }
-#else /** SHELL_LONG_HELP == 1 */
-#define     SHELL_CMD_ITEM(cmd, func, desc)                                 \
-            {                                                               \
-                #cmd,                                                       \
-                (int (*)())func,                                            \
-                #desc                                                       \
-            }
-#define     SHELL_CMD_ITEM_EX(cmd, func, desc, help)                        \
-            {                                                               \
-                #cmd,                                                       \
-                (int (*)())func,                                            \
-                #desc,                                                      \
-            }
-#endif /** SHELL_LONG_HELP == 1 */
-
-#define     SHELL_VAR_ITEM(var, variable, desc, type)                       \
-            {                                                               \
-                #var,                                                       \
-                varialbe,                                                   \
-                #desc,                                                      \
-                type,                                                       \
-            }
-#define     SHELL_VAR_ITEM_INT(var, variable, desc)                         \
-            SHELL_VAR_ITEM(var, &variable, desc, SHELL_VAR_INT)
-#define     SHELL_VAR_ITEM_SHORT(var, variable, desc)                       \
-            SHELL_VAR_ITEM(var, &variable, desc, SHELL_VAR_SHORT)
-#define     SHELL_VAR_ITEM_CHAR(var, variable, desc)                        \
-            SHELL_VAR_ITEM(var, &variable, desc, SHELL_VAR_CHAR)
-#define     SHELL_VAR_ITEM_POINTER(var, variable, desc)                     \
-            SHELL_VAR_ITEM(var, variable, desc, SHELL_VAR_POINTER)
-
-#endif /** SHELL_USING_CMD_EXPORT == 0 */
-
-/* Exported variables --------------------------------------------------------*/
-/**
- * @brief shell读取数据函数原型
- *
- * @param char shell读取的字符
- *
- * @return char 0 读取数据成功
- * @return char -1 读取数据失败
- */
-typedef signed char (*shellRead)(char*);
-
-/**
- * @brief shell写数据函数原型
- *
- * @param const char 需写的字符
- */
-typedef void (*shellWrite)(const char);
-
-/**
- * @brief shell指令执行函数原型
- *
- */
-typedef int (*shellFunction)();
-
-
-/**
- * @brief shell输入状态
- *
- */
-typedef enum
+typedef struct _shell_context_t
 {
-    SHELL_IN_NORMAL = 0,
-    SHELL_ANSI_ESC,
-    SHELL_ANSI_CSI,
-} SHELL_InputMode;
+    const char* name;
 
+    int (*shell_getchar)(void);
+    int (*shell_putchar)(char ch);
+    int (*shell_puts)(const char* str);
+    int (*shell_printf)(const char* fmt, ...);
+    void* (*shell_malloc)(size_t size);
+    void (*shell_free)(void* ptr);
 
-/**
- * @brief shell 命令定义
- *
- */
-typedef struct
-{
-    const char* name;                                           /**< shell命令名称 */
-    shellFunction function;                                     /**< shell命令函数 */
-    const char* desc;                                           /**< shell命令描述 */
-#if SHELL_LONG_HELP == 1
-    const char* help;                                           /**< shell长帮助信息 */
-#endif
-} SHELL_CommandTypeDef;
+    struct shell_command_sets_t* command_sets;
+    struct shell_history_queue_t* history;
+} shell_context_t;
 
+/* Exported constants --------------------------------------------------------*/
 
-#if SHELL_USING_VAR == 1
-/**
- * @brief shell 变量定义
- *
- */
-typedef struct
-{
-    const char* name;                                           /**< shell变量名称 */
-    const void* value;                                          /**< shell变量值 */
-    const char* desc;                                           /**< shell变量描述 */
-    const int type;                                             /**< shell变量类型 */
-} SHELL_VaribaleTypeDef;
-#endif /** SHELL_USING_VAR == 1 */
+/* Exported macro ------------------------------------------------------------*/
 
+/* Exported functions prototypes ---------------------------------------------*/
 
-/**
- * @brief shell对象定义
- *
- */
-typedef struct
-{
-    char* command;                                              /**< shell命令提示符 */
-    char buffer[SHELL_COMMAND_MAX_LENGTH];                      /**< shell命令缓冲 */
-    unsigned short length;                                      /**< shell命令长度 */
-    unsigned short cursor;                                      /**< shell光标位置 */
-    char* param[SHELL_PARAMETER_MAX_NUMBER];                    /**< shell参数 */
-    char history[SHELL_HISTORY_MAX_NUMBER][SHELL_COMMAND_MAX_LENGTH];  /**< 历史记录 */
-    unsigned short historyCount;                                /**< 历史记录数量 */
-    short historyFlag;                                          /**< 当前记录位置 */
-    short historyOffset;                                        /**< 历史记录偏移 */
-    SHELL_CommandTypeDef* commandBase;                          /**< 命令表基址 */
-    unsigned short commandNumber;                               /**< 命令数量 */
-#if SHELL_USING_VAR == 1
-    SHELL_VaribaleTypeDef* variableBase;                        /**< 变量表基址 */
-    unsigned short variableNumber;                              /**< 变量数量 */
-#endif
-    int keyFuncBase;                                            /**< 按键响应表基址 */
-    unsigned short keyFuncNumber;                               /**< 按键响应数量 */
-    struct
-    {
-        unsigned char inputMode : 2;                            /**< 输入模式 */
-        unsigned char isActive: 1;                              /**< 是否是当前活动shell */
-        unsigned char tabFlag : 1;                              /**< tab标志 */
-        unsigned char authFlag : 1;                             /**< 密码标志 */
-    } status;                                                   /**< shell状态 */
-    shellRead read;                                             /**< shell读字符 */
-    shellWrite write;                                           /**< shell写字符 */
-#if SHELL_LONG_HELP == 1 || (SHELL_USING_AUTH && SHELL_LOCK_TIMEOUT > 0)
-    int activeTime;                                             /**< shell激活时间戳 */
-#endif
-} SHELL_TypeDef;
+void shell_output_prompt(shell_context_t* shell);
 
+int shell_getline(shell_context_t* shell, char* buf, size_t bufsize);
 
-/**
- * @brief shell按键功能定义
- *
- */
-typedef struct
-{
-    unsigned char keyCode;                                      /**< shell按键键值 */
-    void (*keyFunction)(SHELL_TypeDef*);                        /**< 按键响应函数 */
-} SHELL_KeyFunctionDef;
+int32_t shell_input(shell_context_t* shell, const char* cmd);
 
-/* Exported functions --------------------------------------------------------*/
-void shellInit(SHELL_TypeDef* shell);
-void shellSetCommandList(SHELL_TypeDef* shell, SHELL_CommandTypeDef* base, unsigned short size);
+void shell_init(shell_context_t* shell, struct shell_command_sets_t* command_sets, struct shell_history_queue_t* history_queue);
 
-#if SHELL_USING_VAR == 1
-void shellSetVariableList(SHELL_TypeDef* shell, SHELL_VaribaleTypeDef* base, unsigned short size);
-int shellGetVariable(SHELL_TypeDef* shell, char* var);
-#endif /** SHELL_USING_VAR == 1 */
-
-void shellSetKeyFuncList(SHELL_TypeDef* shell, SHELL_KeyFunctionDef* base, unsigned short size);
-SHELL_TypeDef* shellGetCurrent(void);
-void shellPrint(SHELL_TypeDef* shell, char* fmt, ...);
-unsigned short shellDisplay(SHELL_TypeDef* shell, const char* string);
-void shellHandler(SHELL_TypeDef* shell, char data);
-#define     shellInput      shellHandler
-
-void shellHelp(int argc, char* argv[]);
-void shellClear(void);
-
-#if SHELL_USING_TASK == 1
-void shellTask(void* param);
+#ifdef __cplusplus
+}
 #endif
 
-#endif
-
+#endif /* __SHELL_H */
