@@ -20,13 +20,12 @@
 
 /* Private includes ----------------------------------------------------------*/
 #include "nr_micro_shell.h"
-#include "bsp_uart.h"
 #include "app_azure_rtos.h"
+#include "bsp_uart.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private define ------------------------------------------------------------*/
-#define SHELL_PORT huart5
 
 /* Private macro -------------------------------------------------------------*/
 
@@ -72,6 +71,11 @@ char tx_hw_console_getchar(void)
 		return ch;
 }
 
+/**
+  * @brief  Nr shell get char
+  * @param  None
+  * @retval Console str
+  */
 static int nr_shell_getchar(void)
 {
 		return tx_hw_console_getchar();
@@ -86,6 +90,8 @@ void shell_thread_entry(ULONG thread_input)
 {
     char ch;
     
+		shell_init();
+	
     while(1)
     {
         ch = nr_shell_getchar();
