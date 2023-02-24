@@ -23,7 +23,6 @@
 #include "app_azure_rtos.h"
 
 /* Private includes ----------------------------------------------------------*/
-#include <stdint.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include "stm32f4xx_hal.h"
@@ -127,16 +126,21 @@ VOID tx_application_define(VOID *first_unused_memory)
   */
 void tx_kprintf(const char *fmt, ...)
 {
-  static char buf_str[TX_CONSOLEBUF_SIZE];
-  va_list v_args;
-  
-  va_start(v_args, fmt);
-  (void)vsnprintf((char *)&buf_str[0], (size_t)sizeof(buf_str), (char const *)fmt, v_args);
-  va_end(v_args);
+		va_list v_args;
+		size_t length;
+		static char buf_str[TX_CONSOLEBUF_SIZE];
 
-  tx_mutex_get(&tx_printf, TX_WAIT_FOREVER);
-  printf("%s", buf_str);
-  tx_mutex_put(&tx_printf);
+    va_start(v_args, fmt);
+	  length = vsnprintf(buf_str, sizeof(buf_str) - 1, fmt, v_args);
+    if (length > TX_CONSOLEBUF_SIZE - 1)
+			  length = TX_CONSOLEBUF_SIZE - 1;
+    
+		tx_hw_console_output(buf_str);
+		va_end(v_args);
+
+    // tx_mutex_get(&tx_printf, TX_WAIT_FOREVER);
+    // printf("%s", buf_str);
+    // tx_mutex_put(&tx_printf);
 }
 
 /**

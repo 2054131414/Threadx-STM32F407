@@ -23,6 +23,11 @@ extern "C" {
 /* Exported defines ----------------------------------------------------------*/
 
 /* Exported variables --------------------------------------------------------*/
+extern UART_HandleTypeDef huart5;
+
+extern UART_HandleTypeDef huart4;
+
+extern UART_HandleTypeDef huart2;
 
 /* Exported functions --------------------------------------------------------*/
 int BSP_Uart_Init(void);

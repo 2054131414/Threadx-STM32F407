@@ -29,6 +29,7 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include "app_azure_rtos_config.h"
 #include "tx_api.h"
+#include <stdint.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
@@ -40,6 +41,8 @@ void tx_kprintf(const char *fmt, ...);
 void *tx_malloc(size_t size);
 
 void tx_free(void *ptr);
+
+uint32_t tx_thread_mdelay(uint32_t ms);
 
 /* Private defines -----------------------------------------------------------*/
 

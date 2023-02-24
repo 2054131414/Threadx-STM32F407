@@ -19,10 +19,14 @@
 #include "shell_task.h"
 
 /* Private includes ----------------------------------------------------------*/
+#include "nr_micro_shell.h"
+#include "bsp_uart.h"
+#include "app_azure_rtos.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private define ------------------------------------------------------------*/
+#define SHELL_PORT huart5
 
 /* Private macro -------------------------------------------------------------*/
 
@@ -32,6 +36,47 @@
 
 /* Private functions ---------------------------------------------------------*/
 
+void tx_hw_console_output(const char *str)
+{
+		size_t i = 0, size = 0;
+		char a = '\r';
+	
+		size = strlen(str);
+	
+		for (i = 0; i < size; i++)
+		{
+				if (*(str + i) == '\n')
+				{
+						HAL_UART_Transmit(&SHELL_PORT, (uint8_t *)&a, 1, 1);
+				}
+				HAL_UART_Transmit(&SHELL_PORT, (uint8_t *)(str + i), 1, 1);
+		}
+}
+
+char tx_hw_console_getchar(void)
+{
+		int ch = -1;
+		
+		if (__HAL_UART_GET_FLAG(&SHELL_PORT, UART_FLAG_RXNE) != RESET)
+		{
+				ch = SHELL_PORT.Instance->DR & 0xff;
+    }
+    else
+    {
+        if(__HAL_UART_GET_FLAG(&SHELL_PORT, UART_FLAG_ORE) != RESET)
+        {
+            __HAL_UART_CLEAR_OREFLAG(&SHELL_PORT);
+        }
+        tx_thread_mdelay(10);
+    }
+		return ch;
+}
+
+static int nr_shell_getchar(void)
+{
+		return tx_hw_console_getchar();
+}
+
 /**
   * @brief  Shell thread entry
   * @param  thread input
@@ -39,11 +84,14 @@
   */
 void shell_thread_entry(ULONG thread_input)
 {
-    tx_kprintf("start main thread %d ...\r\n", thread_input);
+    char ch;
     
     while(1)
     {
-       tx_thread_sleep(100); 
+        ch = nr_shell_getchar();
+			  
+			  if (ch == '\r')
+					shell('\n');
     }
 }
 

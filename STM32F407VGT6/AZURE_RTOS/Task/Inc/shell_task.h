@@ -35,6 +35,10 @@ extern "C" {
 /* Exported Functions Prototypes ---------------------------------------------*/
 void shell_thread_entry(ULONG thread_input);
 
+char tx_hw_console_getchar(void);
+
+void tx_hw_console_output(const char *str);
+
 #ifdef __cplusplus
 }
 #endif
