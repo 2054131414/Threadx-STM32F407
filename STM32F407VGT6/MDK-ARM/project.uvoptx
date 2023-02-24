@@ -3178,8 +3178,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Middlewares\Third_Party\Shell\Src\shell.c</PathWithFileName>
-      <FilenameWithoutPath>shell.c</FilenameWithoutPath>
+      <PathWithFileName>..\Middlewares\Third_Party\Shell\Src\ansi.c</PathWithFileName>
+      <FilenameWithoutPath>ansi.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -3190,8 +3190,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Middlewares\Third_Party\Shell\Src\shell_commands.c</PathWithFileName>
-      <FilenameWithoutPath>shell_commands.c</FilenameWithoutPath>
+      <PathWithFileName>..\Middlewares\Third_Party\Shell\Src\ansi_port.c</PathWithFileName>
+      <FilenameWithoutPath>ansi_port.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -3202,8 +3202,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Middlewares\Third_Party\Shell\Src\shell_history.c</PathWithFileName>
-      <FilenameWithoutPath>shell_history.c</FilenameWithoutPath>
+      <PathWithFileName>..\Middlewares\Third_Party\Shell\Src\nr_micro_shell.c</PathWithFileName>
+      <FilenameWithoutPath>nr_micro_shell.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -3214,20 +3214,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Middlewares\Third_Party\Shell\Src\shell_serial.c</PathWithFileName>
-      <FilenameWithoutPath>shell_serial.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>16</GroupNumber>
-      <FileNumber>242</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>..\Middlewares\Third_Party\Shell\Src\shell_log.c</PathWithFileName>
-      <FilenameWithoutPath>shell_log.c</FilenameWithoutPath>
+      <PathWithFileName>..\Middlewares\Third_Party\Shell\Src\nr_micro_shell_commands.c</PathWithFileName>
+      <FilenameWithoutPath>nr_micro_shell_commands.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

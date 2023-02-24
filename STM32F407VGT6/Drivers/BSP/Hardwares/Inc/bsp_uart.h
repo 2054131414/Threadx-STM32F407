@@ -19,13 +19,6 @@ extern "C" {
 #include "stm32f4xx_hal.h"
 
 /* Exported types ------------------------------------------------------------*/
-typedef enum UART_ID_TYPE 
-{
-    BSP_UART_NULL, 
-    BSP_UART2,
-    BSP_UART4,
-    BSP_UART5
-} UART_ID_T;
 
 /* Exported defines ----------------------------------------------------------*/
 
