@@ -20,6 +20,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 #include "bsp_led.h"
+#include "bsp_key.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -42,9 +43,10 @@ void main_thread_entry(ULONG thread_input)
 {
     tx_kprintf("start main thread %d ...\r\n", thread_input);
     
-    while(1)
-    {
-        led_blink(0,1000);
+    while(1) 
+    {   
+        button_ticks();
+        led_blink(1,1000);
     }
 }
 

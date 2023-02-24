@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx,TX_INCLUDE_USER_DEFINE_FILE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/BSP/Hardwares/Inc;../Drivers/BSP/Component/sfud/inc;../AZURE_RTOS/App;../AZURE_RTOS/Task/Inc;../Middlewares/Third_Party/RTT_Viewer/inc;../Middlewares/ST/threadx/common/inc/;../Middlewares/ST/levelx/common/inc;../Middlewares/ST/levelx/port/inc;../Middlewares/ST/threadx/ports/cortex_m4/ac6/inc/;../Middlewares/Third_Party/Module_Init/Inc;../Middlewares/Third_Party/Shell/Inc</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/BSP/Hardwares/Inc;../Drivers/BSP/Component/sfud/inc;../Drivers/BSP/Component/Button/Inc;../AZURE_RTOS/App;../AZURE_RTOS/Task/Inc;../Middlewares/Third_Party/RTT_Viewer/inc;../Middlewares/ST/threadx/common/inc/;../Middlewares/ST/levelx/common/inc;../Middlewares/ST/levelx/port/inc;../Middlewares/ST/threadx/ports/cortex_m4/ac6/inc/;../Middlewares/Third_Party/Module_Init/Inc;../Middlewares/Third_Party/Shell/Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -704,6 +704,11 @@
               <FileType>1</FileType>
               <FilePath>..\Drivers\BSP\Hardwares\Src\bsp_w25qxx.c</FilePath>
             </File>
+            <File>
+              <FileName>bsp_key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\Hardwares\Src\bsp_key.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -723,6 +728,16 @@
               <FileName>sfud_port.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\BSP\Component\sfud\port\sfud_port.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Drivers/Button</GroupName>
+          <Files>
+            <File>
+              <FileName>multi_button.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\Component\Button\Src\multi_button.c</FilePath>
             </File>
           </Files>
         </Group>
