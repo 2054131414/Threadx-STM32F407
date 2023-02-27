@@ -97,7 +97,7 @@ void Uc1698OpenLcdDisplay(void);
 void Uc1698CloseLcdDisplay(void);
 
 /**
- * 清屏
+ * @brief 清屏
  */
 void Clear_screen(void);
 

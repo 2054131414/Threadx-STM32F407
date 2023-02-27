@@ -21,23 +21,23 @@
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private define ------------------------------------------------------------*/
-#define CS_H 	 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_11,GPIO_PIN_SET);
-#define CS_L 		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_11,GPIO_PIN_RESET);
+#define CS_H    HAL_GPIO_WritePin(GPIOD, GPIO_PIN_11,GPIO_PIN_SET);
+#define CS_L    HAL_GPIO_WritePin(GPIOD, GPIO_PIN_11,GPIO_PIN_RESET);
 
-#define SDA_H 	HAL_GPIO_WritePin(GPIOC,GPIO_PIN_8, GPIO_PIN_SET);
-#define SDA_L 	HAL_GPIO_WritePin(GPIOC,GPIO_PIN_8, GPIO_PIN_RESET);
+#define SDA_H   HAL_GPIO_WritePin(GPIOC,GPIO_PIN_8, GPIO_PIN_SET);
+#define SDA_L   HAL_GPIO_WritePin(GPIOC,GPIO_PIN_8, GPIO_PIN_RESET);
 
-#define SCLK_H 	HAL_GPIO_WritePin(GPIOD,GPIO_PIN_14, GPIO_PIN_SET);
-#define SCLK_L 	HAL_GPIO_WritePin(GPIOD,GPIO_PIN_14, GPIO_PIN_RESET);
+#define SCLK_H  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_14, GPIO_PIN_SET);
+#define SCLK_L  HAL_GPIO_WritePin(GPIOD,GPIO_PIN_14, GPIO_PIN_RESET);
 
-#define LED_H 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET);
-#define LED_L 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);
+#define LED_H   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET);
+#define LED_L   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);
 
-#define RS_H  	HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13 , GPIO_PIN_SET);
-#define RS_L  	HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13 , GPIO_PIN_RESET);
+#define RS_H    HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13 , GPIO_PIN_SET);
+#define RS_L    HAL_GPIO_WritePin(GPIOD,GPIO_PIN_13 , GPIO_PIN_RESET);
 
-#define RST_H 	HAL_GPIO_WritePin(GPIOD,GPIO_PIN_12, GPIO_PIN_SET);
-#define RST_L 	HAL_GPIO_WritePin(GPIOD,GPIO_PIN_12, GPIO_PIN_RESET);
+#define RST_H   HAL_GPIO_WritePin(GPIOD,GPIO_PIN_12, GPIO_PIN_SET);
+#define RST_L   HAL_GPIO_WritePin(GPIOD,GPIO_PIN_12, GPIO_PIN_RESET);
 
 /* Private macro -------------------------------------------------------------*/
 
@@ -51,13 +51,18 @@
   *@retval None
   */
 static void LcdGpioConfig(void);
+
 /**
  * @brief 发送字节数据
  * @param data 数据值
  */
 static void lcd_send_data(unsigned char data);
-static void lcd_send_data(unsigned char data);
-/* 清屏 */
+
+/**
+ * @brief  清屏
+ * @param  None
+ * @retval None
+*/
 void Clear_screen(void)
 {
     uint8_t i, page;
@@ -75,7 +80,12 @@ void Clear_screen(void)
         }
     }
 }
-/* lcd初始化 */
+
+/**
+ * @brief  lcd初始化
+ * @param  None
+ * @retval None
+*/
 void LcdInit(void)
 {
     /* 初始化IO管脚 */
@@ -111,7 +121,11 @@ void LcdInit(void)
     Clear_screen(); /* 清屏 */
 }
 
-/* 写命令 */
+/**
+ * @brief  写命令
+ * @param  cmd
+ * @retval None
+*/
 void WriteLcdCommand(uint8_t cmd)
 {
     CS_L;
@@ -120,7 +134,11 @@ void WriteLcdCommand(uint8_t cmd)
     CS_H;
 }
 
-/* 写书数据 */
+/**
+ * @brief  写书数据
+ * @param  cmd
+ * @retval None
+*/
 void WriteLcdData(uint8_t data)
 {
     CS_L;
@@ -129,21 +147,33 @@ void WriteLcdData(uint8_t data)
     CS_H;
 }
 
-/* 设置起始行 */
+/**
+ * @brief  设置起始行
+ * @param  row
+ * @retval None
+*/
 void SetLcdRow(uint8_t row)
 {
     WriteLcdCommand(CMD_ROWADDRH | ((row & 0xF0) >> 4));
     WriteLcdCommand(CMD_ROWADDRL | (row & 0x0F));
 }
 
-/* 设置起始列 */
+/**
+ * @brief  设置起始列
+ * @param  col
+ * @retval None
+*/
 void SetLcdCol(uint8_t col)
 {
     WriteLcdCommand(CMD_COLADDRH | ((col & 0x70) >> 4));
     WriteLcdCommand(CMD_COLADDRL | (col & 0x0F));
 }
 
-/* 开显示 */
+/**
+ * @brief  开显示
+ * @param  None
+ * @retval None
+*/
 void Uc1698OpenLcdDisplay(void)
 {
     CS_L;
@@ -152,7 +182,11 @@ void Uc1698OpenLcdDisplay(void)
     LED_H;
 }
 
-/* 关显示 */
+/**
+ * @brief  关显示
+ * @param  None
+ * @retval None
+*/
 void Uc1698CloseLcdDisplay(void)
 {
     CS_L;
@@ -160,7 +194,12 @@ void Uc1698CloseLcdDisplay(void)
     CS_H;
     LED_L;
 }
-/* 引脚初始化 */
+
+/**
+ * @brief  引脚初始化
+ * @param  None
+ * @retval None
+*/
 static void LcdGpioConfig(void)
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -172,8 +211,8 @@ static void LcdGpioConfig(void)
     __HAL_RCC_GPIOA_CLK_ENABLE();
     __HAL_RCC_GPIOB_CLK_ENABLE();
     __HAL_RCC_GPIOD_CLK_ENABLE();
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull  = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 
     GPIO_InitStruct.Pin = LCD_SDA_Pin;
@@ -196,7 +235,11 @@ static void LcdGpioConfig(void)
     LED_H;
 }
 
-/* 发送字节数据 */
+/**
+ * @brief  发送字节数据
+ * @param  None
+ * @retval None
+*/
 static void lcd_send_data(unsigned char data)
 {
     unsigned char buf = data;
