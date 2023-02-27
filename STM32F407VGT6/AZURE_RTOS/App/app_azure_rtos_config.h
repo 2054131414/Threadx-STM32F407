@@ -47,7 +47,9 @@ extern "C" {
 
 #define MAIN_THREAD_STACK_SIZE                   256
 
-#define SHELL_THREAD_STACK_SIZE									 256
+#define SHELL_THREAD_STACK_SIZE                  256
+
+#define GUI_THREAD_STACK_SIZE                    256
 
 /* USER CODE END EC */
 

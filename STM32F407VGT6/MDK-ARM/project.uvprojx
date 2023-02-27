@@ -559,6 +559,11 @@
               <FileType>1</FileType>
               <FilePath>..\AZURE_RTOS\Task\Src\shell_task.c</FilePath>
             </File>
+            <File>
+              <FileName>gui_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\AZURE_RTOS\Task\Src\gui_task.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

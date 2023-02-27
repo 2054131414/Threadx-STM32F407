@@ -29,6 +29,7 @@
 #include "module_init.h"
 #include "main_task.h"
 #include "shell_task.h"
+#include "gui_task.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -40,6 +41,7 @@
 static TX_BYTE_POOL byte_pool;
 static TX_THREAD mainthread;
 static TX_THREAD shellthread;
+static TX_THREAD guithread;
 static TX_MUTEX tx_printf;
 char  TX_MEM_POOL[TX_APP_MEM_POOL_SIZE];
 
@@ -88,8 +90,27 @@ VOID tx_application_define(VOID* first_unused_memory)
     {
         state = TX_THREAD_ERROR;
     }
+    
+    /* Allocate the stack for gui thread. */
+    state = tx_byte_allocate(&byte_pool, (VOID**)&pointer, GUI_THREAD_STACK_SIZE, TX_NO_WAIT);
 
-    /* Allocate the stack for main thread. */
+    /* Check create state. */
+    if(state != TX_SUCCESS)
+    {
+        state = TX_POOL_ERROR;
+    }
+    
+    /* Create the gui thread.  */
+    state = tx_thread_create(&guithread, "gui thread", gui_thread_entry, 0, pointer, GUI_THREAD_STACK_SIZE, 5, 5, TX_NO_TIME_SLICE,
+                             TX_AUTO_START);
+    
+    /* Check create state. */
+    if(state != TX_SUCCESS)
+    {
+        state = TX_THREAD_ERROR;
+    }
+    
+    /* Allocate the stack for shell thread. */
     state = tx_byte_allocate(&byte_pool, (VOID**)&pointer, SHELL_THREAD_STACK_SIZE, TX_NO_WAIT);
 
     /* Check create state. */
