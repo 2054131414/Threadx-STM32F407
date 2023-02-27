@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx,TX_INCLUDE_USER_DEFINE_FILE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/BSP/Hardwares/Inc;../Drivers/BSP/Component/sfud/inc;../Drivers/BSP/Component/Button/Inc;../AZURE_RTOS/App;../AZURE_RTOS/Task/Inc;../Middlewares/Third_Party/RTT_Viewer/inc;../Middlewares/ST/threadx/common/inc/;../Middlewares/ST/levelx/common/inc;../Middlewares/ST/levelx/port/inc;../Middlewares/ST/threadx/ports/cortex_m4/ac6/inc/;../Middlewares/Third_Party/Module_Init/Inc;../Middlewares/Third_Party/Shell/Inc</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/BSP/Hardwares/Inc;../Drivers/BSP/Component/sfud/inc;../Drivers/BSP/Component/Button/Inc;../AZURE_RTOS/App;../AZURE_RTOS/Task/Inc;../Middlewares/Third_Party/RTT_Viewer/inc;../Middlewares/ST/threadx/common/inc/;../Middlewares/ST/levelx/common/inc;../Middlewares/ST/levelx/port/inc;../Middlewares/ST/threadx/ports/cortex_m4/ac6/inc/;../Middlewares/Third_Party/Module_Init/Inc;../Middlewares/Third_Party/Shell/Inc;..\Middlewares\Third_Party\lkdGui\include;..\Middlewares\Third_Party\lkdGui\port\fontDriver\GT21L16S2W</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -10583,6 +10583,71 @@
               <FileName>nr_micro_shell_commands.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Middlewares\Third_Party\Shell\Src\nr_micro_shell_commands.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Middlewares/IkdGui</GroupName>
+          <Files>
+            <File>
+              <FileName>lkdGuiBasic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\Third_Party\lkdGui\source\lkdGuiBasic.c</FilePath>
+            </File>
+            <File>
+              <FileName>lkdGuiColour.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\Third_Party\lkdGui\source\lkdGuiColour.c</FilePath>
+            </File>
+            <File>
+              <FileName>lkdGuiControl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\Third_Party\lkdGui\source\lkdGuiControl.c</FilePath>
+            </File>
+            <File>
+              <FileName>lkdGuiFont.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\Third_Party\lkdGui\source\lkdGuiFont.c</FilePath>
+            </File>
+            <File>
+              <FileName>lkdGuiMenu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\Third_Party\lkdGui\source\lkdGuiMenu.c</FilePath>
+            </File>
+            <File>
+              <FileName>lkdGuiWin.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\Third_Party\lkdGui\source\lkdGuiWin.c</FilePath>
+            </File>
+            <File>
+              <FileName>lcdDriverPort.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\Third_Party\lkdGui\port\lcdDriverPort.c</FilePath>
+            </File>
+            <File>
+              <FileName>userAppPort.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\Third_Party\lkdGui\port\userAppPort.c</FilePath>
+            </File>
+            <File>
+              <FileName>userFontPort.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\Third_Party\lkdGui\port\userFontPort.c</FilePath>
+            </File>
+            <File>
+              <FileName>ASCII_5_7.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\Third_Party\lkdGui\port\fontDriver\ASCII_5_7.c</FilePath>
+            </File>
+            <File>
+              <FileName>ASCII_6_12.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\Third_Party\lkdGui\port\fontDriver\ASCII_6_12.c</FilePath>
+            </File>
+            <File>
+              <FileName>ASCII_8_16.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Middlewares\Third_Party\lkdGui\port\fontDriver\ASCII_8_16.c</FilePath>
             </File>
           </Files>
         </Group>

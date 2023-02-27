@@ -9,7 +9,7 @@
 #include "lkdGui.h"
 
 /* 定义前景色/背景色 */
-static lkdColour forecolor = CBLACK,backcolor = CWHITLE;
+static lkdColour forecolor = CBLACK, backcolor = CWHITLE;
 
 /**
   *@brief 获取前景色
@@ -18,7 +18,7 @@ static lkdColour forecolor = CBLACK,backcolor = CWHITLE;
   */
 lkdColour GuiGetForecolor(void)
 {
-	return forecolor;
+    return forecolor;
 }
 
 /**
@@ -28,7 +28,7 @@ lkdColour GuiGetForecolor(void)
   */
 void GuiSetForecolor(lkdColour colour)
 {
-	forecolor = colour;
+    forecolor = colour;
 }
 
 /**
@@ -38,7 +38,7 @@ void GuiSetForecolor(lkdColour colour)
   */
 lkdColour GuiGetbackcolor(void)
 {
-	return backcolor;
+    return backcolor;
 }
 /**
   *@brief 设置背景色
@@ -47,7 +47,7 @@ lkdColour GuiGetbackcolor(void)
   */
 void GuiSetbackcolor(lkdColour colour)
 {
-	backcolor = colour;
+    backcolor = colour;
 }
 
 /**
@@ -57,10 +57,10 @@ void GuiSetbackcolor(lkdColour colour)
   */
 void GuiExchangeColor(void)
 {
-	lkdColour tColour;
-	tColour = forecolor;
-	forecolor = backcolor;
-	backcolor = tColour;
+    lkdColour tColour;
+    tColour = forecolor;
+    forecolor = backcolor;
+    backcolor = tColour;
 }
 
 /* END */
