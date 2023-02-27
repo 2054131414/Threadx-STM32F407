@@ -1,0 +1,8 @@
+from building import *
+
+cwd     = GetCurrentDir()
+src     = Glob('*.c') + Glob('*.cpp') + Glob('lcdDriver/UC1698Driver.c')
+
+group = DefineGroup('lkdGui', src, depend = ['PKG_USING_LKDGUI'])
+
+Return('group')
